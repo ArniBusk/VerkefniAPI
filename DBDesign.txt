@@ -1,0 +1,54 @@
+CREATE TABLE [dbo].[Review] (
+    [Id]        INT            IDENTITY (1, 1) NOT NULL,
+    [AvatarId]    INT            NOT NULL,
+    [Asessment] NVARCHAR (MAX) NOT NULL,
+    [Time]      DATETIME       NOT NULL,
+    PRIMARY KEY CLUSTERED ([Id] ASC),
+    CONSTRAINT [FK_Review_Avatar] FOREIGN KEY ([AvatarId]) REFERENCES [dbo].[Avatar] ([Id])
+);
+
+CREATE TABLE [dbo].[Avatar] (
+    [Id]     INT            IDENTITY (1, 1) NOT NULL,
+    [Name]   NVARCHAR (50)  NOT NULL,
+    [Effect] INT            NOT NULL,
+    [Hp]     INT            NOT NULL,
+    [Lore]   NVARCHAR (MAX) NULL,
+    [Phrase] NVARCHAR (MAX) NOT NULL,
+    [Cost]   INT            DEFAULT ((5000)) NOT NULL,
+    PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+CREATE TABLE [dbo].[Cards] (
+    [Id]       INT            IDENTITY (1, 1) NOT NULL,
+    [Name]     NVARCHAR (50)  NOT NULL,
+    [Hp]       INT            NOT NULL,
+    [Dps]      INT            NOT NULL,
+    [Mana]     INT            NOT NULL,
+    [Info]     NVARCHAR (MAX) NULL,
+    [Active]   BIT            DEFAULT ((0)) NOT NULL,
+    [CardType] INT            DEFAULT ((0)) NOT NULL,
+    PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+CREATE TABLE [dbo].[PlayersAvatars]
+(
+	[Id] INT NOT NULL PRIMARY KEY IDENTITY, 
+    [PlayerId] NVARCHAR(128) NOT NULL, 
+    [AvatarId] INT NOT NULL, 
+    CONSTRAINT [FK_PlayersAvatars_ToASPUsers] FOREIGN KEY ([PlayerId]) REFERENCES [AspNetUsers]([Id]), 
+    CONSTRAINT [FK_PlayersAvatars_ToAvatar] FOREIGN KEY ([AvatarId]) REFERENCES [Avatar]([Id])
+)
+CREATE TABLE [dbo].[PlayersDecks] (
+    [Id]       INT            IDENTITY (1, 1) NOT NULL,
+    [PlayerId] NVARCHAR (128) NOT NULL,
+    [CardId]   INT            NOT NULL,
+    [DeckName] NVARCHAR (MAX) NOT NULL,
+    PRIMARY KEY CLUSTERED ([Id] ASC),
+    CONSTRAINT [FK_PlayersDecks_ToCards] FOREIGN KEY ([CardId]) REFERENCES [dbo].[Cards] ([Id]),
+    CONSTRAINT [FK_PlayersDecks_ToUsers] FOREIGN KEY ([PlayerId]) REFERENCES [dbo].[AspNetUsers] ([Id])
+);
+
+
+
+
+
+
+
